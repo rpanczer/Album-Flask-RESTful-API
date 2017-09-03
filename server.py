@@ -38,7 +38,7 @@ class Artistdetails(Resource):
     def get(self, artist_name):
         conn = db_connect.connect()
         # Protect against SQL injection
-        restricted_char = "!=<>*0&|"
+        restricted_char = "!=<>*0&|/\\"
         for char in restricted_char:
             artist_name = artist_name.replace(char, "")
         query_db = conn.execute("SELECT DISTINCT album FROM album WHERE artist='{0}'".format(artist_name.title()))
