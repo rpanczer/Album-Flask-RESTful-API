@@ -23,11 +23,20 @@ class Artists(Resource):
     def get(self):
         conn = db_connect.connect()
         query_db = conn.execute("SELECT DISTINCT artist FROM album")
-        return {'artists': [i[0] for i in query_db.cursor.fetchall()]}
+        result = {'artists': [i[0] for i in query_db.cursor.fetchall()]}
+        return result
 
+
+class Artistdetails(Resource):
+    def get(self, artist_name):
+        conn = db_connect.connect()
+        query_db = conn.execute("SELECT DISTINCT album FROM album WHERE artist='{0}'".format(artist_name.title()))
+        result = {'artist album list': [i[0] for i in query_db.cursor.fetchall()]}
+        return result
 
 # Create API routes
 api.add_resource(Artists, '/artists')
+api.add_resource(Artistdetails, '/artist/<string:artist_name>')
 
 # Run check and port
 if __name__ == '__main__':
