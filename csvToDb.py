@@ -1,3 +1,6 @@
+"""
+Converts a csv file to sqlite db then runs the api
+"""
 import csv
 import sqlite3
 
@@ -14,6 +17,7 @@ def data_entry():
         dr = csv.DictReader(album_db)
         to_db = [(i['album'], i['artist'], i['genre'], i['year']) for i in dr]
         c.executemany("INSERT INTO album (album, artist, genre, year) VALUES(?,?,?,?);", to_db)
+
 
 create_table()
 data_entry()
