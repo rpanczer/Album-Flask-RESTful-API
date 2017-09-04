@@ -110,17 +110,13 @@ class Genrenum(Resource):
 api.add_resource(Api, '/')
 
 api.add_resource(Albums, '/albums')
-"""
-api.add_resource(Artistdetails, '/album/create/<int:artist_id>/<string:album_name>')
-api.add_resource(Artistdetails, '/album/update/<int:artist_id>/<int:album_id>/<string:album_name>')
-api.add_resource(Artistdetails, '/album/read/<int:artist_id>')
-api.add_resource(Artistdetails, '/album/delete/<int:artist_id>/<int:album_id>')
-"""
+
+api.add_resource(Artistdetails, '/album/<int:artist_id>/<string:album_name>')
+
 api.add_resource(Genreyear, '/albums/yr')
 api.add_resource(Genrenum, '/albums/num')
 
 api.add_resource(Artists, '/artist')
-api.add_resource(Artistdetails, '/artist/<string:artist_name>')
 
 # Run check and port
 if __name__ == '__main__':
