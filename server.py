@@ -54,23 +54,25 @@ class Artistdetails(Resource):
         result = jsonify({'artistAlbumList': [i[0] for i in query_db.cursor.fetchall()]})
         return result
 
-    def put(self, ):
+    def put(self, artist_name, album_name, album_name_new):
         conn = db_connect.connect()
         # Protect against SQL injection
         restricted_char = "!=<>*0&|/\\"
         for char in restricted_char:
             artist_name = artist_name.replace(char, "")
-        query_db = conn.execute("SELECT DISTINCT album FROM album WHERE artist='{0}'".format(artist_name.title()))
+        query_db = conn.execute("UPDATE album SET album='{0}' WHERE artist='{1}' AND"
+                                " album='{2}'".format(artist_name.title(), album_name.title(), album_name_new.title()))
         result = jsonify({'putAlbumId': [i[0] for i in query_db.cursor.fetchall()]})
         return result, 201
 
-    def post(self):
+    def post(self, artist_name, album_name):
         conn = db_connect.connect()
         # Protect against SQL injection
         restricted_char = "!=<>*0&|/\\"
         for char in restricted_char:
             artist_name = artist_name.replace(char, "")
-        query_db = conn.execute("SELECT DISTINCT album FROM album WHERE artist='{0}'".format(artist_name.title()))
+        query_db = conn.execute("INSERT INTO album (album, artist) VALUES"
+                                " ({0},{1})".format(artist_name.title(), album_name.title()))
         result = jsonify({'postAlbumId': [i[0] for i in query_db.cursor.fetchall()]})
         return result, 201
 
@@ -111,7 +113,7 @@ api.add_resource(Api, '/')
 
 api.add_resource(Albums, '/albums')
 
-api.add_resource(Artistdetails, '/album/<int:artist_id>/<string:album_name>')
+api.add_resource(Artistdetails, '/album/<string:artist_name>/<string:album_name>')
 
 api.add_resource(Genreyear, '/albums/yr')
 api.add_resource(Genrenum, '/albums/num')
