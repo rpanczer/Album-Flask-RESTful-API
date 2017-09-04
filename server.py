@@ -76,14 +76,15 @@ class Artistdetails(Resource):
         result = jsonify({'postAlbumId': [i[0] for i in query_db.cursor.fetchall()]})
         return result, 201
 
-    def delete(self, artist_id, album_id):
+    def delete(self, artist_name, album_name):
         conn = db_connect.connect()
         # Protect against SQL injection
         restricted_char = "!=<>*0&|/\\"
         for char in restricted_char:
-            artist_id = artist_id.replace(char, "")
-            album_id = album_id.replace(char, "")
-        query_db = conn.execute("DELETE FROM album WHERE artist_id='{0}' AND album_id='{1}'".format(artist_id, album_id)
+            artist_id = artist_name.replace(char, "")
+            album_id = album_name.replace(char, "")
+        query_db = conn.execute("DELETE FROM album WHERE"
+                                " artist_id='{0}' AND album_id='{1}'".format(artist_name, album_name)
                                 )
         result = jsonify({'deleteAlbumId': [i[0] for i in query_db.cursor.fetchall()]})
         return result, 204
@@ -113,7 +114,7 @@ api.add_resource(Api, '/')
 
 api.add_resource(Albums, '/albums')
 
-api.add_resource(Artistdetails, '/album/<string:artist_name>/<string:album_name>')
+api.add_resource(Artistdetails, '/album/<string:artist_name>/<string:album_name>/<string:album_name_new>')
 
 api.add_resource(Genreyear, '/albums/yr')
 api.add_resource(Genrenum, '/albums/num')
