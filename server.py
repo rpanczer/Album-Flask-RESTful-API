@@ -114,12 +114,12 @@ api.add_resource(Api, '/')
 
 api.add_resource(Albums, '/albums')
 
-api.add_resource(Artistdetails, '/album/<string:artist_name>/<string:album_name>/<string:album_name_new>')
+api.add_resource(Artistdetails, '/albums/<string:artist_name>/<string:album_name>/<string:album_name_new>')
 
 api.add_resource(Genreyear, '/albums/yr')
 api.add_resource(Genrenum, '/albums/num')
 
-api.add_resource(Artists, '/artist')
+api.add_resource(Artists, '/artists')
 
 # Run check and port
 if __name__ == '__main__':
