@@ -117,7 +117,7 @@ api.add_resource(Albums, '/albums')
 api.add_resource(Artistdetails, '/albums/<string:artist_name>/<string:album_name>/<string:album_name_new>')
 
 api.add_resource(Genreyear, '/albums/yr')
-api.add_resource(Genrenum, '/albums/num')
+api.add_resource(Genrenum, '/albums/genre')
 
 api.add_resource(Artists, '/artists')
 
