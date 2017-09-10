@@ -20,6 +20,7 @@ def data_entry():
         c.execute("CREATE INDEX IF NOT EXISTS artist_index ON album (artist);")
 
 
+
 create_table()
 data_entry()
 
