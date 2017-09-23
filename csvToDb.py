@@ -17,9 +17,6 @@ def data_entry():
         dr = csv.DictReader(album_db)
         to_db = [(i['album'], i['artist'], i['genre'], i['year']) for i in dr]
         c.executemany("INSERT INTO album (album, artist, genre, year) VALUES(?,?,?,?);", to_db)
-        c.execute("CREATE INDEX IF NOT EXISTS artist_index ON album (artist);")
-
-
 
 create_table()
 data_entry()
