@@ -46,46 +46,37 @@ class Artists(Resource):
 class Artistdetails(Resource):
     def get(self, artist_name):
         conn = db_connect.connect()
-        # Protect against SQL injection
-        restricted_char = "!=<>*0&|/\\"
-        for char in restricted_char:
-            artist_name = artist_name.replace(char, "")
-        query_db = conn.execute("SELECT DISTINCT album FROM album WHERE artist='{0}'".format(artist_name.title()))
+        artist_name = artist_name.title()
+        query_db = conn.execute("SELECT DISTINCT album FROM album WHERE artist= ?", artist_name)
         result = jsonify({'artistAlbumList': [i[0] for i in query_db.cursor.fetchall()]})
         return result
 
     def put(self, artist_name, album_name, album_name_new):
         conn = db_connect.connect()
-        # Protect against SQL injection
-        restricted_char = "!=<>*0&|/\\"
-        for char in restricted_char:
-            artist_name = artist_name.replace(char, "")
-        query_db = conn.execute("UPDATE album SET album='{0}' WHERE artist='{1}' AND"
-                                " album='{2}'".format(artist_name.title(), album_name.title(), album_name_new.title()))
+        artist_name = artist_name.title()
+        album_name = album_name.title()
+        album_name_new = album_name_new.title()
+        query_db = conn.execute("UPDATE album SET album=? WHERE artist=? AND album=?", artist_name, album_name,
+                                album_name_new)
         result = jsonify({'putAlbumId': [i[0] for i in query_db.cursor.fetchall()]})
         return result, 201
 
     def post(self, artist_name, album_name):
         conn = db_connect.connect()
-        # Protect against SQL injection
-        restricted_char = "!=<>*0&|/\\"
-        for char in restricted_char:
-            artist_name = artist_name.replace(char, "")
+        artist_name = artist_name.title()
+        album_name = album_name.title()
         query_db = conn.execute("INSERT INTO album (album, artist) VALUES"
-                                " ({0},{1})".format(artist_name.title(), album_name.title()))
+                                " (?,?)", artist_name, album_name)
         result = jsonify({'postAlbumId': [i[0] for i in query_db.cursor.fetchall()]})
         return result, 201
 
     def delete(self, artist_name, album_name):
         conn = db_connect.connect()
-        # Protect against SQL injection
-        restricted_char = "!=<>*0&|/\\"
-        for char in restricted_char:
-            artist_id = artist_name.replace(char, "")
-            album_id = album_name.replace(char, "")
+        artist_name = artist_name.title()
+        album_name = album_name.title()
         query_db = conn.execute("DELETE FROM album WHERE"
-                                " artist_id='{0}' AND album_id='{1}'".format(artist_name, album_name)
-                                )
+                                " artist_id=? AND album_id=?", artist_name, album_name)
+
         result = jsonify({'deleteAlbumId': [i[0] for i in query_db.cursor.fetchall()]})
         return result, 204
 
